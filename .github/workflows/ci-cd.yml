@@ -44,7 +44,7 @@ jobs:
         run: |
           echo "PROJECT_NAME=${{ env.PROJECT_NAME }}"
           echo "PROJECT_VERSION=${{ env.PROJECT_VERSION }}"
-          echo "AUTHOR=${{ env.AUTHOR }}"
+          echo "AUTHOR=${{ secrets.DOCKER_USERNAME }}"
 
       - name: Build Docker image
         run: docker build . --file Dockerfile --tag ${{ env.PROJECT_NAME }}:${{ env.PROJECT_VERSION }}

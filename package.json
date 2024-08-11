@@ -1,6 +1,7 @@
 {
   "name": "typescript-backend",
   "version": "1.0.0",
+  "author": "mferpena",
   "description": "",
   "main": "dist/server.js",
   "scripts": {
@@ -15,7 +16,6 @@
     "typescript",
     "backend"
   ],
-  "author": "mferpena",
   "license": "ISC",
   "_moduleAliases": {
     "@infra": "dist/main/node/infra",
