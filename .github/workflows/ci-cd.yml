@@ -40,6 +40,12 @@ jobs:
           echo "PROJECT_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
           echo "AUTHOR=$(node -p "require('./package.json').author")" >> $GITHUB_ENV
 
+      - name: Print project info
+        run: |
+          echo "PROJECT_NAME=${{ env.PROJECT_NAME }}"
+          echo "PROJECT_VERSION=${{ env.PROJECT_VERSION }}"
+          echo "AUTHOR=${{ env.AUTHOR }}"
+
       - name: Build Docker image
         run: docker build . --file Dockerfile --tag ${{ env.PROJECT_NAME }}:${{ env.PROJECT_VERSION }}
 
