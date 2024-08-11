@@ -9,6 +9,8 @@ import { ExchangeRequestRepository } from '@infra/secondary/persistence/Exchange
 import { ExchangeRateService } from '@infra/secondary/apiclients/ExchangeRateService';
 import { ExchangeController } from '@infra/primary/controllers/ExchangeController';
 import { exchangeRoutes } from '@infra/primary/routes/ExchangeRoutes';
+import { HealthController } from '@infra/primary/controllers/Health';
+import { healthRoutes } from '@infra/primary/routes/HealthRoutes';
 
 const logger = new Logger('App');
 
@@ -32,7 +34,10 @@ const startServer = async () => {
         const exchangeRequestService = new ExchangeRequestService(exchangeRequestRepository, exchangeRateService);
         const exchangeController = new ExchangeController(exchangeRequestService);
 
+        const healthController = new HealthController();
+
         exchangeRoutes(app, exchangeController);
+        healthRoutes(app, healthController);
 
         const port = Environments.port;
         app.listen(port, () => {

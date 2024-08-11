@@ -1,44 +1,44 @@
-# name: Docker Image CI
+name: Docker Image CI
 
-# on:
-#   pull_request:
-#     branches: ["main"]
+on:
+  pull_request:
+    branches: ["main"]
 
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - uses: actions/checkout@v4
-#         name: Checkout code
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout code
 
-#       - name: Set up Node.js
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: "21"
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "21"
 
-#       - name: Install dependencies
-#         run: npm install
+      - name: Install dependencies
+        run: npm install
 
-#       - name: Extract project name, version, and author
-#         id: vars
-#         run: |
-#           PROJECT_NAME=$(node -p "require('./package.json').name")
-#           VERSION=$(node -p "require('./package.json').version")
-#           AUTHOR=$(node -p "require('./package.json').author")
-#           echo "PROJECT_NAME=$PROJECT_NAME" >> $GITHUB_ENV
-#           echo "VERSION=$VERSION" >> $GITHUB_ENV
-#           echo "AUTHOR=$AUTHOR" >> $GITHUB_ENV
+      - name: Extract project name, version, and author
+        id: vars
+        run: |
+          PROJECT_NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          AUTHOR=$(node -p "require('./package.json').author")
+          echo "PROJECT_NAME=$PROJECT_NAME" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "AUTHOR=$AUTHOR" >> $GITHUB_ENV
 
-#       - name: Build the Docker image
-#         run: |
-#           docker build . --file Dockerfile --tag ${{ env.PROJECT_NAME }}:latest
+      - name: Build the Docker image
+        run: |
+          docker build . --file Dockerfile --tag ${{ env.PROJECT_NAME }}:latest
 
-#       - name: Log in to Docker Hub
-#         run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
-#       - name: Tag and push Docker image to Docker Hub
-#         run: |
-#           TAG="${{ env.PROJECT_NAME }}:${{ env.VERSION }}"
-#           docker tag ${{ env.PROJECT_NAME }}:latest ${{ secrets.DOCKER_HUB_USERNAME }}/$TAG
-#           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/$TAG
+      - name: Tag and push Docker image to Docker Hub
+        run: |
+          TAG="${{ env.PROJECT_NAME }}:${{ env.VERSION }}"
+          docker tag ${{ env.PROJECT_NAME }}:latest ${{ secrets.DOCKER_HUB_USERNAME }}/$TAG
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/$TAG
