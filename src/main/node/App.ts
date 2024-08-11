@@ -17,9 +17,7 @@ const logger = new Logger('App');
 const createApp = () => {
     const app = express();
     app.use(express.json());
-    app.use(cors({
-        origin: 'http://localhost:5173',
-    }));
+    app.use(cors());
     return app;
 };
 

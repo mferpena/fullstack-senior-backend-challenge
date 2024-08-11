@@ -10,11 +10,11 @@ export class ExchangeController {
     }
 
     /**
- * @swagger
- * tags:
- *   name: Exchange
- *   description: Exchange operations
- */
+     * @swagger
+     * tags:
+     *   name: Exchange
+     *   description: Exchange operations
+     */
 
     /**
      * @swagger
