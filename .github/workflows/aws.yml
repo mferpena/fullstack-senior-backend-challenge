@@ -1,0 +1,46 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches: ["main"]
+
+env:
+  EC2_HOST: 44.202.13.34 # Cambia esto por la IP pública de tu instancia EC2
+  EC2_USER: ubuntu # Cambia esto por el usuario de tu instancia EC2
+  PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }} # Clave privada SSH para conectarse a la instancia EC2
+  DOCKER_IMAGE: mferpena/typescript-backend:latest # Cambia esto por tu imagen Docker en Docker Hub
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+
+      - name: Connect to EC2 and deploy
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ env.EC2_USER }}@${{ env.EC2_HOST }} << 'EOF'
+            # Update and install Docker if necessary
+            sudo apt-get update
+            sudo apt-get install -y docker.io
+
+            # Pull the Docker image from Docker Hub
+            sudo docker pull ${{ env.DOCKER_IMAGE }}
+
+            # Stop and remove the old container if it exists
+            CONTAINER_ID=$(sudo docker ps -q -f name=my_app_container)
+            if [ ! -z "$CONTAINER_ID" ]; then
+              sudo docker stop $CONTAINER_ID
+              sudo docker rm $CONTAINER_ID
+            fi
+
+            # Run the new container
+            sudo docker run -d -p 80:80 --name my_app_container ${{ env.DOCKER_IMAGE }}
+          EOF
