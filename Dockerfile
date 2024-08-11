@@ -28,4 +28,4 @@ COPY --from=build /app/node_modules /app/node_modules
 COPY --from=build /app/package*.json /app/
 
 # Establecer el comando para iniciar la aplicación
-CMD ["node", "start"]
+CMD ["npm", "run", "start"]
