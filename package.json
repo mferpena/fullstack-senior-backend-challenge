@@ -1,6 +1,6 @@
 {
   "name": "typescript-backend",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "mferpena",
   "description": "",
   "main": "dist/server.js",
