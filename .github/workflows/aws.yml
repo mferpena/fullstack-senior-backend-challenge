@@ -17,10 +17,9 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.EC2_PEM_KEY }}" > ~/prueba2.pem
-          mv ~/prueba2.pem ~/.ssh/prueba2.pem
-          chmod 400 ~/.ssh/prueba2.pem
-          ls -l ~/.ssh/prueba2.pem
-          cat ~/.ssh/prueba2.pem
+          chmod 400 ~/prueba2.pem
+          ls -l ~/prueba2.pem
+          cat ~/prueba2.pem
 
       - name: Connect to EC2 and deploy
         env:
@@ -28,7 +27,7 @@ jobs:
           EC2_USER: ubuntu
           DOCKER_IMAGE: mferpena/typescript-backend:latest
         run: |
-          ssh -o StrictHostKeyChecking=no -i "~/.ssh/prueba2.pem" "${{ env.EC2_USER }}@${{ env.EC2_HOST }}" << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i ~/prueba2.pem ${{ env.EC2_USER }}@${{ env.EC2_HOST }} << 'EOF'
             docker stop typescript-backend
             docker rm typescript-backend
             docker pull mferpena/typescript-backend:latest
