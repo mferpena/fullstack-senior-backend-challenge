@@ -22,10 +22,23 @@ jobs:
           ls -l ~/prueba2.pem
           cat ~/prueba2.pem
 
-      - name: Connect to EC2 and deploy
+      - name: Add EC2 host to known_hosts
+        run: |
+          ssh-keyscan -H ${{ env.EC2_HOST }} >> ~/.ssh/known_hosts
+        env:
+          EC2_HOST: ec2-18-212-195-45.compute-1.amazonaws.com
+
+      - name: Test SSH connection
+        env:
+          EC2_HOST: ec2-18-212-195-45.compute-1.amazonaws.com
+          EC2_USER: ubuntu
+        run: |
+          ssh -i "~/prueba2.pem" ${{ env.EC2_USER }}@${{ env.EC2_HOST }} "echo 'SSH connection successful'"
+
+      - name: Deploy to EC2
         env:
           EC2_HOST: ec2-18-212-195-45.compute-1.amazonaws.com
           EC2_USER: ubuntu
           DOCKER_IMAGE: mferpena/typescript-backend:latest
         run: |
-          ssh -i "~/prueba2.pem" ubuntu@ec2-18-212-195-45.compute-1.amazonaws.com "docker stop typescript-backend && docker rm typescript-backend && docker pull ${{ env.DOCKER_IMAGE }} && docker run -d --name typescript-backend -p 5000:5000 ${{ env.DOCKER_IMAGE }}"
+          ssh -i "~/prueba2.pem" ${{ env.EC2_USER }}@${{ env.EC2_HOST }} "docker stop typescript-backend && docker rm typescript-backend && docker pull ${{ env.DOCKER_IMAGE }} && docker run -d --name typescript-backend -p 5000:5000 ${{ env.DOCKER_IMAGE }}"
