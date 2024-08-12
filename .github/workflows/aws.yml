@@ -28,4 +28,4 @@ jobs:
           EC2_USER: ubuntu
           DOCKER_IMAGE: mferpena/typescript-backend:latest
         run: |
-          ssh -i ~/prueba2.pem ubuntu@ec2-44-202-13-34.compute-1.amazonaws.com "docker stop typescript-backend && docker rm typescript-backend && docker pull ${{ env.DOCKER_IMAGE }} && docker run -d --name typescript-backend -p 5000:5000 ${{ env.DOCKER_IMAGE }}"
+          ssh -i "prueba2.pem" ubuntu@ec2-18-212-195-45.compute-1.amazonaws.com "docker stop typescript-backend && docker rm typescript-backend && docker pull ${{ env.DOCKER_IMAGE }} && docker run -d --name typescript-backend -p 5000:5000 ${{ env.DOCKER_IMAGE }}"
