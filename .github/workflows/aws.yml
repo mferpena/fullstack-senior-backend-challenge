@@ -16,7 +16,7 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_PEM_KEY }}" > ~/.ssh/prueba2.pem
+          echo "${{ secrets.EC2_PEM_KEY }}" | sed -e '$a\' > ~/.ssh/prueba2.pem
           chmod 400 ~/.ssh/prueba2.pem
           ls -l ~/.ssh/prueba2.pem
           cat ~/.ssh/prueba2.pem
