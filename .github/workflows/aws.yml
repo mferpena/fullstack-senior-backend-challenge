@@ -16,7 +16,8 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_PEM_KEY }}" > ~/.ssh/prueba2.pem
+          echo "${{ secrets.EC2_PEM_KEY }}" > ~/prueba2.pem
+          mv ~/prueba2.pem ~/.ssh/prueba2.pem
           chmod 400 ~/.ssh/prueba2.pem
 
       - name: Connect to EC2 and deploy
@@ -25,7 +26,7 @@ jobs:
           EC2_USER: ubuntu
           DOCKER_IMAGE: mferpena/typescript-backend:latest
         run: |
-          ssh -o StrictHostKeyChecking=no -i "~/.ssh/prueba2.pem" "${{ env.EC2_USER }}@${{ env.EC2_HOST }}" << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/prueba2.pem "${{ env.EC2_USER }}@${{ env.EC2_HOST }}" << 'EOF'
             # Pull the Docker image from Docker Hub
             sudo docker pull ${{ env.DOCKER_IMAGE }}
 
